@@ -26,6 +26,21 @@ class DBhelper {
       await File(path).writeAsBytes(bytes, flush: true);
       print("db copy");
     }
-    await openDatabase(path);
+    return openDatabase(path);
+  }
+
+  Future<List<Map<String, dynamic>>> getCat() async {
+    Database db = await initDb();
+    return db.query('texesgroups');
+  }
+
+  Future<List<Map<String, dynamic>>> getArticle(int gid) async {
+    Database db = await initDb();
+    return db.query('texes', where: 'gid = ?', whereArgs: [gid]);
+  }
+
+  Future<List<Map<String, dynamic>>> getContent(int id) async {
+    Database db = await initDb();
+    return db.query('texes', where: 'id = ?', whereArgs: [id]);
   }
 }

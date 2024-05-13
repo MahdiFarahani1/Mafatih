@@ -2,7 +2,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/Config/route.dart';
-import 'package:flutter_application_1/Core/database/db_helper.dart';
 import 'package:flutter_application_1/Core/utils/esay_size.dart';
 import 'package:flutter_application_1/Core/widgets/gredient.dart';
 import 'package:flutter_application_1/Features/About_Us/presentations/screens/about_us_page.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_application_1/Features/Favorite/presentations/Favorite.d
 import 'package:flutter_application_1/Features/Search/presentations/Search.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/Setting.dart';
 import 'package:flutter_application_1/gen/assets.gen.dart';
+import 'package:flutter_application_1/gen/fonts.gen.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -45,6 +45,7 @@ class MyHomePage extends StatelessWidget {
                         .moveX()
                     : DefaultTextStyle(
                         style: const TextStyle(
+                            fontFamily: FontFamily.arabic,
                             fontSize: 24,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
@@ -58,7 +59,7 @@ class MyHomePage extends StatelessWidget {
                               },
                             );
                           },
-                          pause: const Duration(milliseconds: 1200),
+                          pause: const Duration(milliseconds: 800),
                           animatedTexts: [
                             RotateAnimatedText('تطبيق مناسك الحج'),
                             RotateAnimatedText('لبيك اللهم لبيك'),
@@ -82,8 +83,7 @@ class MyHomePage extends StatelessWidget {
                       topRight: Radius.circular(50))),
               child: Center(
                 child: InkResponse(
-                  onTap: () {
-                    DBhelper().initDb();
+                  onTap: () async {
                     GetRoute.route(const Article());
                   },
                   child: Container(

@@ -6,9 +6,7 @@ class Favorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
+      appBar: AppBar(),
     );
   }
 }
