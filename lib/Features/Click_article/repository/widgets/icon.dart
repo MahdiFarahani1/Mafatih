@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 class CommonIcon {
   static Widget icon({required IconData icon, required VoidCallback event}) {
     return GestureDetector(
-        onLongPress: () {
-          print("sadasdsa");
-        },
+        onLongPress: () {},
         onTap: () {
           event();
         },

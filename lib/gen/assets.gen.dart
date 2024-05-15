@@ -30,11 +30,23 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [coHajjApp512];
 }
 
+class $AssetsLottieGen {
+  const $AssetsLottieGen();
+
+  /// File path: assets/lottie/Animation - 1715784626188.json
+  String get animation1715784626188 =>
+      'assets/lottie/Animation - 1715784626188.json';
+
+  /// List of all assets
+  List<String> get values => [animation1715784626188];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsDatabaseGen database = $AssetsDatabaseGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsLottieGen lottie = $AssetsLottieGen();
 }
 
 class AssetGenImage {

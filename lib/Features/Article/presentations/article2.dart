@@ -6,19 +6,19 @@ import 'package:flutter_application_1/Core/database/db_helper.dart';
 import 'package:flutter_application_1/Core/utils/esay_size.dart';
 import 'package:flutter_application_1/Core/utils/loading.dart';
 import 'package:flutter_application_1/Core/widgets/icon_appbar.dart';
-import 'package:flutter_application_1/Features/Article/presentations/article2.dart';
+import 'package:flutter_application_1/Features/Article/presentations/Article3.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/article_main_page.dart';
 import 'package:flutter_application_1/Features/Click_article/repository/name_cat.dart';
-import 'package:flutter_application_1/Features/Home/presentation/home.dart';
+import 'package:get/get.dart';
 
-class Article extends StatefulWidget {
-  const Article({super.key});
+class Article2 extends StatefulWidget {
+  const Article2({super.key});
 
   @override
-  State<Article> createState() => _ArticleState();
+  State<Article2> createState() => _ArticleState();
 }
 
-class _ArticleState extends State<Article> {
+class _ArticleState extends State<Article2> {
   bool cheker = true;
   Future<List<Map<String, dynamic>>>? articles;
   DBhelper dbHelper = DBhelper();
@@ -31,7 +31,7 @@ class _ArticleState extends State<Article> {
   }
 
   void loadArticleNames() {
-    articles = dbHelper.getArticle(0);
+    articles = dbHelper.getArticle(Get.arguments);
   }
 
   @override
@@ -41,7 +41,14 @@ class _ArticleState extends State<Article> {
       onPopInvoked: (didPop) {},
       child: Scaffold(
         appBar: AppBar(
-          title: IconBar.icon(),
+          title: Text(
+            NameCat.nameCategory,
+            textDirection: TextDirection.rtl,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+          ),
+          actions: [
+            IconBar.icon(),
+          ],
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -62,20 +69,11 @@ class _ArticleState extends State<Article> {
                                 GetRoute.route(const ArticleMain(),
                                     arg: lastParentId);
                               } else {
-                                GetRoute.route(const Article2(),
+                                GetRoute.route(const Article3(),
                                     arg: lastParentId);
                               }
                             },
                           );
-
-                          // articles!.then(
-                          //   (value) {
-                          //     if (value.isEmpty) {
-                          //       GetRoute.route(const ArticleMain(),
-                          //           arg: lastParentId);
-                          //     }
-                          //   },
-                          // );
                         },
                         child: Container(
                           width: EsaySize.width(context),
