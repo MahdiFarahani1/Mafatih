@@ -8,19 +8,18 @@ import 'package:flutter_application_1/Core/utils/esay_size.dart';
 import 'package:flutter_application_1/Core/utils/loading.dart';
 import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
 import 'package:flutter_application_1/Core/widgets/gredient.dart';
-import 'package:flutter_application_1/Features/Article/presentations/Article5.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/article_lastList.dart';
 import 'package:flutter_application_1/Features/Click_article/repository/name_cat.dart';
 import 'package:get/get.dart';
 
-class Article4 extends StatefulWidget {
-  const Article4({super.key});
+class Article5 extends StatefulWidget {
+  const Article5({super.key});
 
   @override
-  State<Article4> createState() => _ArticleState();
+  State<Article5> createState() => _ArticleState();
 }
 
-class _ArticleState extends State<Article4> {
+class _ArticleState extends State<Article5> {
   bool cheker = true;
   Future<List<Map<String, dynamic>>>? articles;
   DBhelper dbHelper = DBhelper();
@@ -63,12 +62,8 @@ class _ArticleState extends State<Article4> {
                       articles = dbHelper.getArticle(lastParentId);
                       articles!.then(
                         (value) {
-                          if (value.isEmpty) {
-                            GetRoute.route(const ArticleLastList(),
-                                arg: lastParentId);
-                          } else {
-                            GetRoute.route(const Article5(), arg: lastParentId);
-                          }
+                          GetRoute.route(const ArticleLastList(),
+                              arg: lastParentId);
                         },
                       );
                     },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/cubit/settings_cubit.dart';
 import 'package:flutter_application_1/Features/Setting/widgets/base.dart';
 import 'package:flutter_application_1/gen/fonts.gen.dart';
@@ -10,7 +11,7 @@ class Setting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: CommonAppbar.appbar(true, context),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           return Column(

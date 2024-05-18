@@ -45,6 +45,11 @@ class DBhelper {
     return db.query('articles', where: 'groupId = ?', whereArgs: [id]);
   }
 
+  Future<List<Map<String, dynamic>>> getRealArticle(int id) async {
+    Database db = await initDb();
+    return db.query('articles', where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<List<Map<String, dynamic>>> getSearch(String query) async {
     Database db = await initDb();
     return db.rawQuery("SELECT * FROM articles WHERE title LIKE '%$query%'");

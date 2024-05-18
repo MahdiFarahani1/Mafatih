@@ -6,10 +6,10 @@ class CostumLoading {
   static Widget loadCircle(BuildContext context) {
     return SpinKitRipple(
       itemBuilder: (context, index) {
-        return const DecoratedBox(
+        return DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.blueAccent,
+            color: Theme.of(context).primaryColor,
           ),
         );
       },
@@ -20,9 +20,9 @@ class CostumLoading {
     return SpinKitThreeInOut(
       size: 35,
       itemBuilder: (context, index) {
-        return const DecoratedBox(
+        return DecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.blueAccent,
+            color: Theme.of(context).primaryColor,
           ),
         );
       },
@@ -33,9 +33,9 @@ class CostumLoading {
     return SpinKitFadingCircle(
       size: 35,
       itemBuilder: (context, index) {
-        return const DecoratedBox(
+        return DecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.blueAccent,
+            color: Theme.of(context).primaryColor,
           ),
         );
       },

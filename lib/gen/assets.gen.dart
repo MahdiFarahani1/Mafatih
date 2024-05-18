@@ -22,12 +22,34 @@ class $AssetsDatabaseGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/co-hajj-app-512.jpg
-  AssetGenImage get coHajjApp512 =>
-      const AssetGenImage('assets/images/co-hajj-app-512.jpg');
+  /// File path: assets/images/fav.png
+  AssetGenImage get fav => const AssetGenImage('assets/images/fav.png');
+
+  /// File path: assets/images/homeA.png
+  AssetGenImage get homeA => const AssetGenImage('assets/images/homeA.png');
+
+  /// File path: assets/images/information.png
+  AssetGenImage get information =>
+      const AssetGenImage('assets/images/information.png');
+
+  /// File path: assets/images/logo_main.png
+  AssetGenImage get logoMain =>
+      const AssetGenImage('assets/images/logo_main.png');
+
+  /// File path: assets/images/search.png
+  AssetGenImage get search => const AssetGenImage('assets/images/search.png');
+
+  /// File path: assets/images/settings .png
+  AssetGenImage get settings =>
+      const AssetGenImage('assets/images/settings .png');
+
+  /// File path: assets/images/splash-hajj.png
+  AssetGenImage get splashHajj =>
+      const AssetGenImage('assets/images/splash-hajj.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [coHajjApp512];
+  List<AssetGenImage> get values =>
+      [fav, homeA, information, logoMain, search, settings, splashHajj];
 }
 
 class $AssetsLottieGen {
@@ -37,8 +59,11 @@ class $AssetsLottieGen {
   String get animation1715784626188 =>
       'assets/lottie/Animation - 1715784626188.json';
 
+  /// File path: assets/lottie/list.json
+  String get list => 'assets/lottie/list.json';
+
   /// List of all assets
-  List<String> get values => [animation1715784626188];
+  List<String> get values => [animation1715784626188, list];
 }
 
 class Assets {

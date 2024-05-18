@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Config/route.dart';
+import 'package:flutter_application_1/Core/const/const_color.dart';
 import 'package:flutter_application_1/Core/utils/esay_size.dart';
 import 'package:flutter_application_1/Core/utils/loading.dart';
+import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
+import 'package:flutter_application_1/Core/widgets/gredient.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/article_main_page.dart';
 import 'package:flutter_application_1/Features/Search/presentations/cubit/search_cubit.dart';
 import 'package:flutter_application_1/gen/assets.gen.dart';
@@ -25,7 +28,7 @@ class _SearchState extends State<Search> {
       },
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(),
+          appBar: CommonAppbar.appbar(true, context),
           body: Directionality(
               textDirection: TextDirection.rtl,
               child: Column(
@@ -34,7 +37,7 @@ class _SearchState extends State<Search> {
                     width: EsaySize.width(context),
                     height: EsaySize.height(context) * 0.1,
                     decoration: BoxDecoration(
-                        color: Colors.blue.shade700,
+                        gradient: CustomGr.gradient(),
                         borderRadius: const BorderRadius.only(
                             bottomRight: Radius.circular(12),
                             bottomLeft: Radius.circular(12))),
@@ -47,18 +50,18 @@ class _SearchState extends State<Search> {
                         },
                         controller: textEditingController,
                         style: const TextStyle(color: Colors.white),
-                        cursorColor: Colors.white,
+                        cursorColor: ConstColor.Col3,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.blue.shade400,
+                          fillColor: ConstColor.Col2,
                           suffixIcon: GestureDetector(
                               onTap: () {
                                 BlocProvider.of<SearchCubit>(context)
                                     .searchData(textEditingController.text);
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.search,
-                                color: Colors.white,
+                                color: ConstColor.Col3,
                               )),
                           contentPadding: const EdgeInsets.all(10),
                           focusedBorder: OutlineInputBorder(
@@ -71,57 +74,57 @@ class _SearchState extends State<Search> {
                       ),
                     ),
                   ),
-                  BlocBuilder<SearchCubit, SearchState>(
-                    builder: (context, state) {
-                      if (state.status is Loading) {
-                        return Expanded(
-                            child: CostumLoading.fadingCircle(context));
-                      }
-                      if (state.status is Error) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 130),
-                          child: Lottie.asset(
-                              Assets.lottie.animation1715784626188),
-                        );
-                      }
-                      if (state.status is SearchData) {
-                        return Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.data?.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  GetRoute.route(const ArticleMain(),
-                                      arg: state.data?[index]["groupId"]);
-                                },
-                                child: Container(
-                                  width: EsaySize.width(context),
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: Colors.blueAccent,
-                                      borderRadius: BorderRadius.circular(12)),
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 12),
-                                  child: Center(
-                                      child: Text(
-                                    state.data?[index]["title"],
-                                    style: const TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
+                  listViewWithBloc(),
                 ],
               ))),
+    );
+  }
+
+  BlocBuilder<SearchCubit, SearchState> listViewWithBloc() {
+    return BlocBuilder<SearchCubit, SearchState>(
+      builder: (context, state) {
+        if (state.status is Loading) {
+          return Expanded(child: CostumLoading.fadingCircle(context));
+        }
+        if (state.status is Error) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 130),
+            child: Lottie.asset(Assets.lottie.animation1715784626188),
+          );
+        }
+        if (state.status is SearchData) {
+          return Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.data?.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    GetRoute.route(const ArticleMain(),
+                        arg: state.data?[index]["id"]);
+                  },
+                  child: Container(
+                    width: EsaySize.width(context),
+                    height: 50,
+                    decoration: CustomGr.dec(),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+                    child: Center(
+                        child: Text(
+                      state.data?[index]["title"],
+                      style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    )),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }
