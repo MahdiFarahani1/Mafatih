@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
-import 'package:flutter_application_1/Features/Setting/presentations/cubit/settings_cubit.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/setting/settings_cubit.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
 import 'package:flutter_application_1/Features/Setting/widgets/base.dart';
 import 'package:flutter_application_1/gen/fonts.gen.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Setting extends StatelessWidget {
@@ -72,12 +74,19 @@ class Setting extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Text(
-                "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
+            BlocBuilder<SettingsCubit, SettingsState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontFamily: state.fontFamily),
+                  ),
+                );
+              },
             ),
           ],
         ));
@@ -151,6 +160,8 @@ class Setting extends StatelessWidget {
                   onChanged: (value) {
                     BlocProvider.of<SettingsCubit>(context)
                         .changeisDarkState(value);
+                    BlocProvider.of<ThemeCubit>(context).changeTheme(value);
+                    box.write("mode", value);
                   },
                 ),
               ),

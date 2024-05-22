@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/Core/const/const_color.dart';
+import 'package:flutter_application_1/Features/Click_article/presentations/bloc/audio/audio_cubit.dart';
 import 'package:flutter_application_1/Features/Search/presentations/cubit/search_cubit.dart';
-import 'package:flutter_application_1/Features/Setting/presentations/cubit/settings_cubit.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/setting/settings_cubit.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
 import 'package:flutter_application_1/Features/Splash/Splash.dart';
+import 'package:flutter_application_1/gen/fonts.gen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -32,6 +34,15 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => SearchCubit(),
           ),
+          BlocProvider(
+            create: (context) => AudioCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ThemeCubit(),
+          ),
+          // BlocProvider(
+          //   create: (context) => AudioLoadingCubit(),
+          // ),
         ],
         child: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
@@ -39,10 +50,14 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                   appBarTheme: AppBarTheme(
-                      iconTheme: IconThemeData(color: ConstColor.Col3),
-                      titleTextStyle: TextStyle(color: ConstColor.Col3)),
-                  fontFamily: state.fontFamily,
-                  primaryColor: ConstColor.Col1,
+                      iconTheme: IconThemeData(
+                          color:
+                              BlocProvider.of<ThemeCubit>(context).state.Col3),
+                      titleTextStyle: TextStyle(
+                          color:
+                              BlocProvider.of<ThemeCubit>(context).state.Col3)),
+                  fontFamily: FontFamily.arabic,
+                  primaryColor: BlocProvider.of<ThemeCubit>(context).state.Col1,
                   colorScheme:
                       ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                   useMaterial3: true,

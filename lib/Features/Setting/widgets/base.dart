@@ -20,7 +20,7 @@ class ItemSetting extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    gradient: CustomGr.gradient()),
+                    gradient: CustomGr.gradient(context)),
                 width: EsaySize.width(context),
                 child: child,
               ),

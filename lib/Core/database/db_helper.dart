@@ -37,7 +37,26 @@ class DBhelper {
   Future<List<Map<String, dynamic>>> getArticle(int id) async {
     Database db = await initDb();
 
-    return db.query('articlesgroups', where: 'parent_id = ?', whereArgs: [id]);
+    // Query the articlesgroups table
+    List<Map<String, dynamic>> articleGroups = await db.query(
+      'articlesgroups',
+      where: 'parent_id = ?',
+      whereArgs: [id],
+    );
+
+    // Query the article table
+    List<Map<String, dynamic>> articles = await db.query(
+      'articles',
+      where: 'groupId = ?',
+      whereArgs: [id],
+    );
+
+    // Combine the results
+    List<Map<String, dynamic>> combinedResults = [];
+    combinedResults.addAll(articleGroups);
+    combinedResults.addAll(articles);
+
+    return combinedResults;
   }
 
   Future<List<Map<String, dynamic>>> getNewContent(int id) async {

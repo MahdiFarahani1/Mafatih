@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Core/const/const_color.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomGr {
-  static LinearGradient gradient() {
+  static LinearGradient gradient(BuildContext context) {
     return LinearGradient(begin: Alignment.topCenter, colors: [
-      ConstColor.Col0,
-      ConstColor.Col1,
-      ConstColor.Col2,
+      BlocProvider.of<ThemeCubit>(context).state.Col0,
+      BlocProvider.of<ThemeCubit>(context).state.Col1,
+      BlocProvider.of<ThemeCubit>(context).state.Col2,
     ]);
   }
 
-  static LinearGradient gradientLeft() {
+  static LinearGradient gradientLeft(BuildContext context) {
     return LinearGradient(begin: Alignment.topCenter, colors: [
-      ConstColor.Col2,
-      ConstColor.Col1,
-      ConstColor.Col0,
+      BlocProvider.of<ThemeCubit>(context).state.Col2,
+      BlocProvider.of<ThemeCubit>(context).state.Col1,
+      BlocProvider.of<ThemeCubit>(context).state.Col0,
     ]);
   }
 
-  static BoxDecoration dec() {
+  static BoxDecoration dec(BuildContext context) {
     return BoxDecoration(
         border: Border.all(
-          color: ConstColor.Col3,
+          color: BlocProvider.of<ThemeCubit>(context).state.Col3,
           width: 2,
         ),
-        color: ConstColor.Col1,
+        color: BlocProvider.of<ThemeCubit>(context).state.Col1,
         borderRadius: BorderRadius.circular(4));
   }
 }

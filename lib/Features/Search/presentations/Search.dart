@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Config/route.dart';
-import 'package:flutter_application_1/Core/const/const_color.dart';
 import 'package:flutter_application_1/Core/utils/esay_size.dart';
 import 'package:flutter_application_1/Core/utils/loading.dart';
 import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
 import 'package:flutter_application_1/Core/widgets/gredient.dart';
+import 'package:flutter_application_1/Features/Article/presentations/widget/box.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/article_main_page.dart';
 import 'package:flutter_application_1/Features/Search/presentations/cubit/search_cubit.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
 import 'package:flutter_application_1/gen/assets.gen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -37,7 +38,7 @@ class _SearchState extends State<Search> {
                     width: EsaySize.width(context),
                     height: EsaySize.height(context) * 0.1,
                     decoration: BoxDecoration(
-                        gradient: CustomGr.gradient(),
+                        gradient: CustomGr.gradient(context),
                         borderRadius: const BorderRadius.only(
                             bottomRight: Radius.circular(12),
                             bottomLeft: Radius.circular(12))),
@@ -50,10 +51,12 @@ class _SearchState extends State<Search> {
                         },
                         controller: textEditingController,
                         style: const TextStyle(color: Colors.white),
-                        cursorColor: ConstColor.Col3,
+                        cursorColor:
+                            BlocProvider.of<ThemeCubit>(context).state.Col3,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: ConstColor.Col2,
+                          fillColor:
+                              BlocProvider.of<ThemeCubit>(context).state.Col2,
                           suffixIcon: GestureDetector(
                               onTap: () {
                                 BlocProvider.of<SearchCubit>(context)
@@ -61,7 +64,9 @@ class _SearchState extends State<Search> {
                               },
                               child: Icon(
                                 Icons.search,
-                                color: ConstColor.Col3,
+                                color: BlocProvider.of<ThemeCubit>(context)
+                                    .state
+                                    .Col3,
                               )),
                           contentPadding: const EdgeInsets.all(10),
                           focusedBorder: OutlineInputBorder(
@@ -99,26 +104,15 @@ class _SearchState extends State<Search> {
               itemCount: state.data?.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () {
-                    GetRoute.route(const ArticleMain(),
-                        arg: state.data?[index]["id"]);
-                  },
-                  child: Container(
-                    width: EsaySize.width(context),
-                    height: 50,
-                    decoration: CustomGr.dec(),
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-                    child: Center(
-                        child: Text(
-                      state.data?[index]["title"],
-                      style: const TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                );
+                    onTap: () {
+                      GetRoute.route(
+                          ArticleMain(
+                            isSearchMode: true,
+                            txtSearch: textEditingController.text,
+                          ),
+                          arg: state.data?[index]["id"]);
+                    },
+                    child: CommonBox.txt(state.data?[index]['title'], context));
               },
             ),
           );

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Config/route.dart';
-import 'package:flutter_application_1/Core/const/const_color.dart';
 import 'package:flutter_application_1/Core/database/db_helper.dart';
 import 'package:flutter_application_1/Core/utils/esay_size.dart';
 import 'package:flutter_application_1/Core/utils/loading.dart';
 import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
-import 'package:flutter_application_1/Core/widgets/gredient.dart';
+import 'package:flutter_application_1/Features/Article/presentations/widget/box.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/article_main_page.dart';
 import 'package:flutter_application_1/Features/Click_article/repository/name_cat.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class ArticleLastList extends StatefulWidget {
@@ -57,42 +58,26 @@ class _ArticleMainState extends State<ArticleLastList> {
               child: ListView.separated(
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         NameCat.nameCategory = snapshot.data?[index]['title'];
                         lastParentId = snapshot.data?[index]['id'];
-
                         articles = dbHelper.getNewContent(lastParentId);
-                        articles!.then(
+                        await articles!.then(
                           (value) {
-                            if (value.isEmpty) {
-                              GetRoute.route(const ArticleMain(),
-                                  arg: lastParentId);
-                            }
+                            GetRoute.route(const ArticleMain(),
+                                arg: lastParentId);
                           },
                         );
                       },
-                      child: Container(
-                        width: EsaySize.width(context),
-                        height: 50,
-                        decoration: CustomGr.dec(),
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 12),
-                        child: Center(
-                            child: Text(
-                          snapshot.data?[index]["title"],
-                          style: const TextStyle(
-                              fontSize: 17,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        )),
-                      ),
+                      child: CommonBox.txt(
+                          snapshot.data?[index]['title'], context),
                     );
                   },
                   separatorBuilder: (context, index) {
                     return Divider(
                       endIndent: 60,
                       indent: 60,
-                      color: ConstColor.Col0,
+                      color: BlocProvider.of<ThemeCubit>(context).state.Col0,
                     );
                   },
                   itemCount: snapshot.data!.length));

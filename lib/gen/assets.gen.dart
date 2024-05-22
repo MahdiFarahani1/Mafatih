@@ -25,12 +25,13 @@ class $AssetsImagesGen {
   /// File path: assets/images/fav.png
   AssetGenImage get fav => const AssetGenImage('assets/images/fav.png');
 
-  /// File path: assets/images/homeA.png
-  AssetGenImage get homeA => const AssetGenImage('assets/images/homeA.png');
-
   /// File path: assets/images/information.png
   AssetGenImage get information =>
       const AssetGenImage('assets/images/information.png');
+
+  /// File path: assets/images/logoMainPage.png
+  AssetGenImage get logoMainPage =>
+      const AssetGenImage('assets/images/logoMainPage.png');
 
   /// File path: assets/images/logo_main.png
   AssetGenImage get logoMain =>
@@ -43,13 +44,25 @@ class $AssetsImagesGen {
   AssetGenImage get settings =>
       const AssetGenImage('assets/images/settings .png');
 
-  /// File path: assets/images/splash-hajj.png
+  /// File path: assets/images/splash-hajj.jpg
   AssetGenImage get splashHajj =>
-      const AssetGenImage('assets/images/splash-hajj.png');
+      const AssetGenImage('assets/images/splash-hajj.jpg');
+
+  /// File path: assets/images/up-arrows.png
+  AssetGenImage get upArrows =>
+      const AssetGenImage('assets/images/up-arrows.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [fav, homeA, information, logoMain, search, settings, splashHajj];
+  List<AssetGenImage> get values => [
+        fav,
+        information,
+        logoMainPage,
+        logoMain,
+        search,
+        settings,
+        splashHajj,
+        upArrows
+      ];
 }
 
 class $AssetsLottieGen {
