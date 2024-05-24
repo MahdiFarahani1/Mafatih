@@ -23,22 +23,7 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          GetRoute.route(const Article());
-        },
-        child: BlocBuilder<ThemeCubit, ThemeState>(
-          builder: (context, state) {
-            return CircleAvatar(
-                radius: 35,
-                backgroundColor: state.Col0,
-                child: LottieBuilder.asset(
-                  Assets.lottie.list,
-                  reverse: true,
-                ));
-          },
-        ),
-      ),
+      floatingActionButton: floatingAction(),
       body: Stack(
         children: [
           BlocBuilder<ThemeCubit, ThemeState>(
@@ -106,6 +91,25 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: bottomNavBar(context),
+    );
+  }
+
+  GestureDetector floatingAction() {
+    return GestureDetector(
+      onTap: () {
+        GetRoute.route(const Article());
+      },
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return CircleAvatar(
+              radius: 35,
+              backgroundColor: state.Col0,
+              child: LottieBuilder.asset(
+                Assets.lottie.list,
+                reverse: true,
+              ));
+        },
+      ),
     );
   }
 
@@ -222,7 +226,11 @@ class MyHomePage extends StatelessWidget {
                   child: CircleAvatar(
                       radius: 29,
                       backgroundColor: Colors.white,
-                      child: Assets.images.fav.image(width: 40, height: 40)),
+                      child: Icon(
+                        Icons.star,
+                        size: 40,
+                        color: BlocProvider.of<ThemeCubit>(context).state.Col1,
+                      )),
                 ),
               ],
             ),

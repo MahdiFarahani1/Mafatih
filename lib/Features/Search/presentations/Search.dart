@@ -34,54 +34,53 @@ class _SearchState extends State<Search> {
               textDirection: TextDirection.rtl,
               child: Column(
                 children: [
-                  Container(
-                    width: EsaySize.width(context),
-                    height: EsaySize.height(context) * 0.1,
-                    decoration: BoxDecoration(
-                        gradient: CustomGr.gradient(context),
-                        borderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(12),
-                            bottomLeft: Radius.circular(12))),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        onSubmitted: (value) {
-                          BlocProvider.of<SearchCubit>(context)
-                              .searchData(value);
-                        },
-                        controller: textEditingController,
-                        style: const TextStyle(color: Colors.white),
-                        cursorColor:
-                            BlocProvider.of<ThemeCubit>(context).state.Col3,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor:
-                              BlocProvider.of<ThemeCubit>(context).state.Col2,
-                          suffixIcon: GestureDetector(
-                              onTap: () {
-                                BlocProvider.of<SearchCubit>(context)
-                                    .searchData(textEditingController.text);
-                              },
-                              child: Icon(
-                                Icons.search,
-                                color: BlocProvider.of<ThemeCubit>(context)
-                                    .state
-                                    .Col3,
-                              )),
-                          contentPadding: const EdgeInsets.all(10),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(15)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(15)),
-                        ),
-                      ),
-                    ),
-                  ),
+                  textField(context),
                   listViewWithBloc(),
                 ],
               ))),
+    );
+  }
+
+  Container textField(BuildContext context) {
+    return Container(
+      width: EsaySize.width(context),
+      height: EsaySize.height(context) * 0.1,
+      decoration: BoxDecoration(
+          gradient: CustomGr.gradient(context),
+          borderRadius: const BorderRadius.only(
+              bottomRight: Radius.circular(12),
+              bottomLeft: Radius.circular(12))),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextField(
+          onSubmitted: (value) {
+            BlocProvider.of<SearchCubit>(context).searchData(value);
+          },
+          controller: textEditingController,
+          style: const TextStyle(color: Colors.white),
+          cursorColor: BlocProvider.of<ThemeCubit>(context).state.Col3,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: BlocProvider.of<ThemeCubit>(context).state.Col2,
+            suffixIcon: GestureDetector(
+                onTap: () {
+                  BlocProvider.of<SearchCubit>(context)
+                      .searchData(textEditingController.text);
+                },
+                child: Icon(
+                  Icons.search,
+                  color: BlocProvider.of<ThemeCubit>(context).state.Col3,
+                )),
+            contentPadding: const EdgeInsets.all(10),
+            focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(15)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(15)),
+          ),
+        ),
+      ),
     );
   }
 

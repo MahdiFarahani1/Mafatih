@@ -53,6 +53,18 @@ class _ArticleMainState extends State<ArticleMain> {
   ScrollController controller = ScrollController();
 
   Future<List<Map<String, dynamic>>>? articles;
+
+  double _playbackRate = 1.0;
+  final List<double> _playbackRates = [1.0, 1.5, 2.0];
+  int _currentRateIndex = 0;
+
+  void _togglePlaybackRate() {
+    _currentRateIndex = (_currentRateIndex + 1) % _playbackRates.length;
+    _playbackRate = _playbackRates[_currentRateIndex];
+    audio.setPlaybackRate(_playbackRate);
+    setState(() {});
+  }
+
   @override
   initState() {
     BlocProvider.of<AudioCubit>(context).initState(audio);
@@ -72,13 +84,16 @@ class _ArticleMainState extends State<ArticleMain> {
     DBhelper dbHelper = DBhelper();
     articles = dbHelper.getRealArticle(Get.arguments as int);
     articles!.then((value) async {
+      print(value);
+
       setState(
         () {
           idSave = value[0]["id"];
           checkIcon = box.read("icon$idSave") ?? false;
           idSave = value[0]["id"];
           checkIcon = box.read("icon$idSave") ?? false;
-          if (value.any((element) => element["sound"] == null) &&
+          if (value.any((element) =>
+                  element["sound"] == "" || element["sound"] == null) &&
               value.any((element) => element["video"] == null) &&
               value.any((element) => element["image"] == null)) {
             mode = ArticleMode.onlyHasText;
@@ -253,7 +268,24 @@ class _ArticleMainState extends State<ArticleMain> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: const CircleBorder(),
+                      ),
+                      onPressed: _togglePlaybackRate,
+                      child: Text(
+                        'x$_playbackRate',
+                        style: TextStyle(
+                            color: BlocProvider.of<ThemeCubit>(context)
+                                .state
+                                .Col2),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -379,16 +411,21 @@ class _ArticleMainState extends State<ArticleMain> {
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  CachedNetworkImage(
-                    imageUrl: snapshot.data?[0]['image'],
-                    placeholder: (context, url) {
-                      return Center(
-                        child: CostumLoading.fadingCircle(context),
-                      );
-                    },
-                    errorWidget: (context, url, error) {
-                      return const Icon(Icons.error);
-                    },
+                  InteractiveViewer(
+                    boundaryMargin: const EdgeInsets.all(20.0),
+                    minScale: 0.1,
+                    maxScale: 4.0,
+                    child: CachedNetworkImage(
+                      imageUrl: snapshot.data?[0]['image'],
+                      placeholder: (context, url) {
+                        return Center(
+                          child: CostumLoading.fadingCircle(context),
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return const Icon(Icons.error);
+                      },
+                    ),
                   ),
                 ],
               );
@@ -409,64 +446,82 @@ class _ArticleMainState extends State<ArticleMain> {
         textDirection: TextDirection.rtl,
         child: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
-            return ListView.builder(
-              itemCount: snapshot.data?.length,
-              controller: controller,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 16, bottom: 5, left: 8, right: 8),
-                      child: Text(
-                        snapshot.data![0]['title'] ?? "",
-                        style: TextStyle(
-                            fontFamily: state.fontFamily,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: BlocBuilder<SettingsCubit, SettingsState>(
-                        builder: (context, state) {
-                          return widget.isSearchMode
-                              ? Padding(
-                                  padding: const EdgeInsets.only(bottom: 70),
-                                  child: TextHighlight(
-                                    text: snapshot.data?[0]['_text'],
-                                    words: {
-                                      widget.txtSearch: HighlightedWord(
-                                          textStyle: TextStyle(
+            return Directionality(
+              textDirection: TextDirection.ltr,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 7),
+                child: Scrollbar(
+                  thickness: 3,
+                  thumbVisibility: true,
+                  trackVisibility: true,
+                  controller: controller,
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      controller: controller,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 16, bottom: 5, left: 8, right: 8),
+                              child: Text(
+                                snapshot.data![0]['title'] ?? "",
+                                style: TextStyle(
+                                    fontFamily: state.fontFamily,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: BlocBuilder<SettingsCubit, SettingsState>(
+                                builder: (context, state) {
+                                  return widget.isSearchMode
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 70),
+                                          child: TextHighlight(
+                                            text: snapshot.data?[0]['_text'],
+                                            words: {
+                                              widget.txtSearch: HighlightedWord(
+                                                  textStyle: TextStyle(
+                                                      fontFamily:
+                                                          state.fontFamily,
+                                                      color: Colors.red,
+                                                      fontSize: state.fontSize))
+                                            },
+                                            textStyle: TextStyle(
                                               fontFamily: state.fontFamily,
-                                              color: Colors.red,
-                                              fontSize: state.fontSize))
-                                    },
-                                    textStyle: TextStyle(
-                                      fontFamily: state.fontFamily,
-                                      fontSize: 20.0,
-                                      color: Colors.black,
-                                    ),
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(bottom: 70),
-                                  child: Text(
-                                    snapshot.data?[0]['_text'],
-                                    style: TextStyle(
-                                        fontFamily: state.fontFamily,
-                                        color: Colors.black,
-                                        fontSize: state.fontSize),
-                                  ),
-                                );
-                        },
-                      ),
+                                              fontSize: 20.0,
+                                              color: Colors.black,
+                                            ),
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 70),
+                                          child: Text(
+                                            snapshot.data?[0]['_text'],
+                                            style: TextStyle(
+                                                fontFamily: state.fontFamily,
+                                                color: Colors.black,
+                                                fontSize: state.fontSize),
+                                          ),
+                                        );
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  ],
-                );
-              },
+                  ),
+                ),
+              ),
             );
           },
         ));
@@ -480,6 +535,26 @@ class _ArticleMainState extends State<ArticleMain> {
       actions: [
         Row(
           children: [
+            mode == ArticleMode.onlyHasVideo
+                ? CommonIcon.icon(
+                    icon: FontAwesomeIcons.download,
+                    event: () {
+                      articles!.then((value) {
+                        FileDownloader.downloadFile(
+                          onProgress: (fileName, progress) {},
+                          notificationType: NotificationType.all,
+                          url: value[0]["video"],
+                          name: value[0]["id"].toString(),
+                          onDownloadCompleted: (String path) async {
+                            //     box.write("audio${value[0]["id"]}", path);
+                            // await BlocProvider.of<AudioCubit>(context)
+                            //     .changeIcon(audio, urlMusic, idSave);
+                          },
+                        );
+                      });
+                    },
+                    context: context)
+                : const SizedBox(),
             mode == ArticleMode.onlyHasSound || mode == ArticleMode.soundAndtext
                 ? CommonIcon.icon(
                     icon: FontAwesomeIcons.download,
@@ -568,14 +643,80 @@ class _ArticleMainState extends State<ArticleMain> {
                         scrollbool = !scrollbool;
                       });
                       if (scrollbool) {
-                        controller
-                            .animateTo(controller.position.maxScrollExtent,
-                                duration: const Duration(seconds: 10),
-                                curve: Curves.linear)
-                            .then((value) {
-                          if (controller.position.pixels ==
-                              controller.position.maxScrollExtent) {
-                            scrollbool = false;
+                        articles!.then((value) {
+                          String size = value[0]["_text"];
+                          if (size.length <= 3000) {
+                            controller
+                                .animateTo(controller.position.maxScrollExtent,
+                                    duration: const Duration(seconds: 50),
+                                    curve: Curves.linear)
+                                .then((value) {
+                              if (controller.position.pixels ==
+                                  controller.position.maxScrollExtent) {
+                                scrollbool = false;
+                              }
+                            });
+                          }
+                          if (size.length > 3000 && size.length <= 6000) {
+                            controller
+                                .animateTo(controller.position.maxScrollExtent,
+                                    duration: const Duration(seconds: 160),
+                                    curve: Curves.linear)
+                                .then((value) {
+                              if (controller.position.pixels ==
+                                  controller.position.maxScrollExtent) {
+                                scrollbool = false;
+                              }
+                            });
+                          }
+                          if (size.length > 6000 && size.length <= 9000) {
+                            controller
+                                .animateTo(controller.position.maxScrollExtent,
+                                    duration: const Duration(seconds: 240),
+                                    curve: Curves.linear)
+                                .then((value) {
+                              if (controller.position.pixels ==
+                                  controller.position.maxScrollExtent) {
+                                scrollbool = false;
+                              }
+                            });
+                          }
+
+                          if (size.length > 9000 && size.length <= 12000) {
+                            controller
+                                .animateTo(controller.position.maxScrollExtent,
+                                    duration: const Duration(seconds: 320),
+                                    curve: Curves.linear)
+                                .then((value) {
+                              if (controller.position.pixels ==
+                                  controller.position.maxScrollExtent) {
+                                scrollbool = false;
+                              }
+                            });
+                          }
+                          if (size.length > 12000 && size.length <= 15000) {
+                            controller
+                                .animateTo(controller.position.maxScrollExtent,
+                                    duration: const Duration(seconds: 400),
+                                    curve: Curves.linear)
+                                .then((value) {
+                              if (controller.position.pixels ==
+                                  controller.position.maxScrollExtent) {
+                                scrollbool = false;
+                              }
+                            });
+                          }
+                          if (size.length > 15000) {
+                            controller
+                                .animateTo(controller.position.maxScrollExtent,
+                                    duration: const Duration(seconds: 700),
+                                    curve: Curves.linear)
+                                .then((value) {
+                              if (controller.position.pixels ==
+                                  controller.position.maxScrollExtent) {
+                                scrollbool = false;
+                              }
+                            });
                           }
                         });
                       } else {

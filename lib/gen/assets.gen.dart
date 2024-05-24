@@ -22,9 +22,6 @@ class $AssetsDatabaseGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/fav.png
-  AssetGenImage get fav => const AssetGenImage('assets/images/fav.png');
-
   /// File path: assets/images/information.png
   AssetGenImage get information =>
       const AssetGenImage('assets/images/information.png');
@@ -54,7 +51,6 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        fav,
         information,
         logoMainPage,
         logoMain,
