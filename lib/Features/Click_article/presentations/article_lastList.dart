@@ -65,7 +65,7 @@ class _ArticleMainState extends State<ArticleLastList> {
                         await articles!.then(
                           (value) {
                             GetRoute.route(const ArticleMain(),
-                                arg: lastParentId);
+                                arg: lastParentId, context: context);
                           },
                         );
                       },

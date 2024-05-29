@@ -6,7 +6,9 @@ import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
 import 'package:flutter_application_1/Core/widgets/gredient.dart';
 import 'package:flutter_application_1/Features/Article/presentations/widget/box.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/article_main_page.dart';
+import 'package:flutter_application_1/Features/Home/presentation/bloc/bloc/audio_home_bloc.dart';
 import 'package:flutter_application_1/Features/Search/presentations/cubit/search_cubit.dart';
+import 'package:flutter_application_1/Features/Search/repository/search_text.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
 import 'package:flutter_application_1/gen/assets.gen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +28,7 @@ class _SearchState extends State<Search> {
     return PopScope(
       onPopInvoked: (didPop) {
         BlocProvider.of<SearchCubit>(context).init();
+        BlocProvider.of<AudioHomeBloc>(context).add(PlayAudio());
       },
       child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -54,7 +57,9 @@ class _SearchState extends State<Search> {
         padding: const EdgeInsets.all(8.0),
         child: TextField(
           onSubmitted: (value) {
-            BlocProvider.of<SearchCubit>(context).searchData(value);
+            String processedText = processText(value);
+
+            BlocProvider.of<SearchCubit>(context).searchData(processedText);
           },
           controller: textEditingController,
           style: const TextStyle(color: Colors.white),
@@ -64,8 +69,11 @@ class _SearchState extends State<Search> {
             fillColor: BlocProvider.of<ThemeCubit>(context).state.Col2,
             suffixIcon: GestureDetector(
                 onTap: () {
+                  String processedText =
+                      processText(textEditingController.text);
+
                   BlocProvider.of<SearchCubit>(context)
-                      .searchData(textEditingController.text);
+                      .searchData(processedText);
                 },
                 child: Icon(
                   Icons.search,
@@ -109,7 +117,8 @@ class _SearchState extends State<Search> {
                             isSearchMode: true,
                             txtSearch: textEditingController.text,
                           ),
-                          arg: state.data?[index]["id"]);
+                          arg: state.data?[index]["id"],
+                          context: context);
                     },
                     child: CommonBox.txt(state.data?[index]['title'], context));
               },

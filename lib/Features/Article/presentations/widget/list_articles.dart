@@ -30,9 +30,10 @@ class ListArticles {
                           (value) {
                             if (snapshot.data![index].containsKey("_text")) {
                               GetRoute.route(const ArticleMain(),
-                                  arg: lastParentId);
+                                  arg: lastParentId, context: context);
                             } else {
-                              GetRoute.route(myClass, arg: lastParentId);
+                              GetRoute.route(myClass,
+                                  arg: lastParentId, context: context);
                             }
                           },
                         );

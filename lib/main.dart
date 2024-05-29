@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/bloc/audio/audio_cubit.dart';
+import 'package:flutter_application_1/Features/Home/presentation/bloc/bloc/audio_home_bloc.dart';
 import 'package:flutter_application_1/Features/Search/presentations/cubit/search_cubit.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/bloc/setting/settings_cubit.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
@@ -40,9 +41,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ThemeCubit(),
           ),
-          // BlocProvider(
-          //   create: (context) => AudioLoadingCubit(),
-          // ),
+          BlocProvider(
+            create: (context) => AudioHomeBloc(),
+          ),
         ],
         child: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {

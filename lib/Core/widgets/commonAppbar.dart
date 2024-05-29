@@ -26,7 +26,7 @@ class CommonAppbar {
             actions: [
               GestureDetector(
                   onTap: () {
-                    GetRoute.route(const MyHomePage());
+                    GetRoute.route(const MyHomePage(), context: context);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -52,7 +52,7 @@ class CommonAppbar {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                     onTap: () {
-                      GetRoute.route(const MyHomePage());
+                      GetRoute.route(const MyHomePage(), context: context);
                     },
                     child: Icon(
                       Icons.home_outlined,

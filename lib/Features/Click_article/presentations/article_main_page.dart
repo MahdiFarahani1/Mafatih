@@ -320,7 +320,7 @@ class _ArticleMainState extends State<ArticleMain> {
           label: 'الرئيسية',
           labelStyle: const TextStyle(fontSize: 18.0),
           onTap: () {
-            GetRoute.route(const MyHomePage());
+            GetRoute.route(const MyHomePage(), context: context);
           },
         ),
         SpeedDialChild(
@@ -333,7 +333,7 @@ class _ArticleMainState extends State<ArticleMain> {
           label: 'الاعدادات',
           labelStyle: const TextStyle(fontSize: 18.0),
           onTap: () {
-            GetRoute.route(const Setting());
+            GetRoute.route(const Setting(), context: context);
           },
         ),
         SpeedDialChild(
@@ -346,8 +346,28 @@ class _ArticleMainState extends State<ArticleMain> {
           label: 'مشاركة',
           labelStyle: const TextStyle(fontSize: 18.0),
           onTap: () {
-            articles!.then((value) {
-              Share.share("${value[0]["title"]}\n${value[0]["_text"]}");
+            articles?.then((value) {
+              String shareContent =
+                  "${value[0]["title"]}\n${value[0]["_text"]}";
+
+              switch (mode) {
+                case ArticleMode.onlyHasSound:
+                  shareContent = "${value[0]["title"]}\n${value[0]["sound"]}";
+                  break;
+                case ArticleMode.onlyHasText:
+                  shareContent = "${value[0]["title"]}\n${value[0]["_text"]}";
+                  break;
+                case ArticleMode.onlyHasVideo:
+                  shareContent = "${value[0]["title"]}\n${value[0]["video"]}";
+                case ArticleMode.onlyHaspicture:
+                  shareContent = "${value[0]["title"]}\n${value[0]["image"]}";
+                case ArticleMode.soundAndtext:
+                  shareContent =
+                      "${value[0]["title"]}\n${value[0]["_text"]}\n${value[0]["sound"]}";
+
+                default:
+              }
+              Share.share(shareContent);
             });
           },
         ),
@@ -484,6 +504,7 @@ class _ArticleMainState extends State<ArticleMain> {
                                           padding:
                                               const EdgeInsets.only(bottom: 70),
                                           child: TextHighlight(
+                                            textDirection: TextDirection.rtl,
                                             text: snapshot.data?[0]['_text'],
                                             words: {
                                               widget.txtSearch: HighlightedWord(
@@ -506,6 +527,7 @@ class _ArticleMainState extends State<ArticleMain> {
                                               const EdgeInsets.only(bottom: 70),
                                           child: Text(
                                             snapshot.data?[0]['_text'],
+                                            textAlign: TextAlign.justify,
                                             style: TextStyle(
                                                 fontFamily: state.fontFamily,
                                                 color: Colors.black,

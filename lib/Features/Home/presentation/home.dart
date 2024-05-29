@@ -23,7 +23,7 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: floatingAction(),
+      floatingActionButton: floatingAction(context),
       body: Stack(
         children: [
           BlocBuilder<ThemeCubit, ThemeState>(
@@ -58,13 +58,14 @@ class MyHomePage extends StatelessWidget {
                     left: 60, right: 60, top: 0, bottom: 140),
                 child: InkResponse(
                         onTap: () async {
-                          GetRoute.route(const Article());
+                          GetRoute.route(const Article(), context: context);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(0),
                           child: GestureDetector(
                               onTap: () {
-                                GetRoute.route(const Article());
+                                GetRoute.route(const Article(),
+                                    context: context);
                               },
                               child: Assets.images.logoMain
                                   .image(width: 200, height: 200)),
@@ -79,7 +80,7 @@ class MyHomePage extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: GestureDetector(
               onTap: () {
-                GetRoute.route(const AboutUs());
+                GetRoute.route(const AboutUs(), context: context);
               },
               child: Assets.images.logoMainPage
                   .image(height: 200, width: 200)
@@ -94,10 +95,10 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  GestureDetector floatingAction() {
+  GestureDetector floatingAction(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GetRoute.route(const Article());
+        GetRoute.route(const Article(), context: context);
       },
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
@@ -190,7 +191,7 @@ class MyHomePage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    GetRoute.route(const Setting());
+                    GetRoute.route(const Setting(), context: context);
                   },
                   child: CircleAvatar(
                     radius: 29,
@@ -201,7 +202,7 @@ class MyHomePage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    GetRoute.route(const AboutUs());
+                    GetRoute.route(const AboutUs(), context: context);
                   },
                   child: CircleAvatar(
                       radius: 29,
@@ -212,7 +213,7 @@ class MyHomePage extends StatelessWidget {
                 const SizedBox(width: 60),
                 GestureDetector(
                   onTap: () {
-                    GetRoute.route(const Search());
+                    GetRoute.route(const Search(), context: context);
                   },
                   child: CircleAvatar(
                       radius: 29,
@@ -221,7 +222,7 @@ class MyHomePage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    GetRoute.route(const Favorite());
+                    GetRoute.route(const Favorite(), context: context);
                   },
                   child: CircleAvatar(
                       radius: 29,

@@ -71,7 +71,7 @@ class DBhelper {
 
   Future<List<Map<String, dynamic>>> getSearch(String query) async {
     Database db = await initDb();
-    return db.rawQuery("SELECT * FROM articles WHERE title LIKE '%$query%'");
+    return db.rawQuery("SELECT * FROM articles WHERE _text LIKE '%$query%'");
     // return db.query('articles', where: 'title LIKE ?', whereArgs: ['%$query%']);
   }
 

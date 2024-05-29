@@ -7,6 +7,7 @@ import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
 import 'package:flutter_application_1/Core/widgets/gredient.dart';
 import 'package:flutter_application_1/Features/Click_article/presentations/article_main_page.dart';
 import 'package:flutter_application_1/Features/Click_article/repository/name_cat.dart';
+import 'package:flutter_application_1/Features/Home/presentation/bloc/bloc/audio_home_bloc.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,9 +35,14 @@ class _FavoriteState extends State<Favorite> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CommonAppbar.appbar(true, context),
-      body: buildListView(),
+    return PopScope(
+      onPopInvoked: (didPop) {
+        BlocProvider.of<AudioHomeBloc>(context).add(PlayAudio());
+      },
+      child: Scaffold(
+        appBar: CommonAppbar.appbar(true, context),
+        body: buildListView(),
+      ),
     );
   }
 
@@ -54,7 +60,7 @@ class _FavoriteState extends State<Favorite> {
 
                       articles = dbHelper.getArticle(lastParentId);
                       GetRoute.route(const ArticleMain(),
-                          arg: snapshot.data?[index]['id']);
+                          arg: snapshot.data?[index]['id'], context: context);
                     },
                     child: Container(
                       width: EsaySize.width(context),

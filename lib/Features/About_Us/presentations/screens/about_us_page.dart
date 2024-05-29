@@ -2,35 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Core/utils/esay_size.dart';
 import 'package:flutter_application_1/Core/widgets/commonAppbar.dart';
 import 'package:flutter_application_1/Core/widgets/gredient.dart';
+import 'package:flutter_application_1/Features/Home/presentation/bloc/bloc/audio_home_bloc.dart';
+import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CommonAppbar.appbar(true, context),
-      body: Column(
-        children: [
-          aboutUs(context),
-          const Spacer(),
-          const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [],
-              //    Btn.allbtn(context)
-            ),
-          )
-        ],
+    return PopScope(
+      onPopInvoked: (didPop) {
+        BlocProvider.of<AudioHomeBloc>(context).add(PlayAudio());
+      },
+      child: Scaffold(
+        appBar: CommonAppbar.appbar(true, context),
+        body: Column(
+          children: [
+            aboutUs(context),
+            const Spacer(),
+            const Spacer(),
+            // const Padding(
+            //   padding: EdgeInsets.all(12.0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [],
+            //     //    Btn.allbtn(context)
+            //   ),
+            // ),
+            Card(
+                color: BlocProvider.of<ThemeCubit>(context).state.Col1,
+                child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Text(
+                      "برمجة وتطوير: دجلة لتقنية المعلومات ـ DIjlah IT",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ),
+                    )))
+          ],
+        ),
       ),
     );
   }
 
   Container aboutUs(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
-      width: EsaySize.width(context) * 0.92,
+      margin: const EdgeInsets.only(top: 20, left: 15, right: 15),
+      width: EsaySize.width(context),
       height: EsaySize.height(context) * 0.75,
       decoration: BoxDecoration(
           gradient: CustomGr.gradient(context),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Core/utils/esay_size.dart';
+import 'package:flutter_application_1/Features/Home/presentation/bloc/bloc/audio_home_bloc.dart';
 import 'package:flutter_application_1/Features/Home/presentation/home.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/bloc/setting/settings_cubit.dart';
 import 'package:flutter_application_1/Features/Setting/presentations/bloc/theme/cubit/theme_cubit.dart';
@@ -26,6 +27,7 @@ class _SplashState extends State<Splash> {
       () {
         Get.offAll(const MyHomePage(),
             popGesture: false, transition: tr.Transition.zoom);
+        BlocProvider.of<AudioHomeBloc>(context).add(PlayAudio());
       },
     );
     super.initState();

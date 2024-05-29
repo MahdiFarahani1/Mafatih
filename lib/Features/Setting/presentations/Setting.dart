@@ -20,7 +20,21 @@ class Setting extends StatelessWidget {
             children: [
               fontFamily(context, state.valueFontFamily),
               fontSize(context, state.fontSize),
-              darkMode(context, state.isLightMode)
+              darkMode(context, state.isLightMode),
+              const Spacer(),
+              Card(
+                color: BlocProvider.of<ThemeCubit>(context).state.Col1,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Text(
+                    "الاصدار: 1.7",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+              ),
             ],
           );
         },
